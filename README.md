@@ -4,6 +4,12 @@
 
 
 ## Test
+- 클래스 단위 테스트
 ```sh
 venv/bin/python -m unittest tests.machine.test_korbit_machine
+```
+
+- 특정 함수 테스트
+```sh
+venv/bin/python -m unittest tests.machine.test_korbit_machine.KorbitMachineTestCase.test_get_ticker
 ```

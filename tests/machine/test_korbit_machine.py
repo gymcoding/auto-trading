@@ -29,3 +29,9 @@ class KorbitMachineTestCase(unittest.TestCase):
         access_token = self.korbit_machine.get_token()
         assert access_token
         print(f'AccessToken: {access_token}')
+    
+    def test_get_ticker(self):
+        print(inspect.stack()[0][3])
+        ticker = self.korbit_machine.get_ticker('etc_krw')
+        assert ticker
+        print(ticker)

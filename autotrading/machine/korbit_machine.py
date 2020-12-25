@@ -1,5 +1,6 @@
 import configparser
 import requests
+import time
 
 # API call rate limit
 # 안정적인 Korbit API 서비스 제공을 위하여 짧은 시간 내에 limit call rate을 초과하는 일정 빈도 이상의 호출은 허용되지 않는다.
@@ -60,4 +61,27 @@ class KorbitMachine():
             return self.access_token
         else:
             raise Exception('Need to set_token')
-
+    
+    # 최종 체결정보(Tick)조회 구현
+    def get_ticker(self, currency_type=None):
+        if currency_type is None:
+            raise Exception('Need to currency type')
+        time.sleep(1)
+        params = {
+            'currency_pair': currency_type
+        }
+        ticker_api_path = '/v1/ticker/detailed'
+        url_path = f'{self.BASE_API_URL}{ticker_api_path}'
+        response = requests.get(url_path, params=params)
+        response_json = response.json()
+        result = {}
+        result['timestamp'] = str(response_json['timestamp'])
+        result['last'] = str(response_json['last'])
+        result['bid'] = str(response_json['bid'])
+        result['ask'] = str(response_json['ask'])
+        result['high'] = str(response_json['high'])
+        result['low'] = str(response_json['low'])
+        result['volume'] = str(response_json['volume'])
+        return result
+    
+    
