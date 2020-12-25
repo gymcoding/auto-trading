@@ -57,3 +57,9 @@ class KorbitMachineTestCase(unittest.TestCase):
         nonce = self.korbit_machine.get_nonce()
         assert nonce
         print(nonce)
+
+    def test_sell_order(self):
+        print(inspect.stack()[0][3])
+        sell_order = self.korbit_machine.sell_order(currency_type='etc_krw', price='40000', qty='1', order_type='limit')
+        assert sell_order
+        print(sell_order)

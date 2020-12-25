@@ -139,3 +139,26 @@ class KorbitMachine():
     
     def get_nonce(self):
         return str(int(time.time()))
+    
+    # 매도주문 구현
+    def sell_order(self, currency_type=None, price=None, qty=None, order_type='limit'):
+        time.sleep(1)
+        if price is None or qty is None or currency_type is None:
+            raise Exception('Need to params')
+        if order_type != 'limit':
+            raise Exception('Check order type')
+        sell_order_api_path = '/v1/user/orders/sell'
+        url_path = f'{self.BASE_API_URL}{sell_order_api_path}'
+        headers = {
+            'Authorization': f'Bearer {self.access_token}'
+        }
+        data = {
+            'currency_pair': currency_type,
+            'type': order_type,
+            'price': price,
+            'coin_amount': qty,
+            'nonce': self.get_nonce(),
+        }
+        response = requests.post(url_path, headers=headers, data=data)
+        result = response.json()
+        return result
