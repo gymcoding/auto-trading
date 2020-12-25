@@ -11,8 +11,8 @@ class KorbitMachine():
     # REAT API 기본 URL
     BASE_API_URL = 'https://api.korbit.co.kr'
 
-    # 코빗 API에서 지원하는 화폐 종류
-    TRADE_CURRENCY_TYPE = ['btc', 'bch', 'btg', 'eth', 'etc', 'xrp', 'krw']
+    # 코빗 API에서 지원하는 화폐 종류 (제외 'btg')
+    TRADE_CURRENCY_TYPE = ['btc', 'bch', 'eth', 'etc', 'xrp', 'krw']
 
     def __init__(self):
         config = configparser.ConfigParser()
@@ -99,3 +99,19 @@ class KorbitMachine():
         result = response.json()
         return result
     
+    # 사용자 지갑 잔액 조회 구현
+    def get_wallet_status(self):
+        time.sleep(1)
+        wallet_status_api_path = '/v1/user/balances'
+        url_path = f'{self.BASE_API_URL}{wallet_status_api_path}'
+        headers = {
+            'Authorization': f'Bearer {self.access_token}'
+        }
+        response = requests.get(url_path, headers=headers)
+        result = response.json()
+        wallet_status = {
+            currency: dict(avail=result[currency]['available']) for currency in self.TRADE_CURRENCY_TYPE
+        }
+        for item in self.TRADE_CURRENCY_TYPE:
+            wallet_status[item]['balance'] = str(float(result[item]['trade_in_use']) + float(result[item]['withdrawal_in_use']))
+        return wallet_status

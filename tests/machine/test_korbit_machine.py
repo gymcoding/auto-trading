@@ -12,13 +12,6 @@ class KorbitMachineTestCase(unittest.TestCase):
 
     def test_set_token(self):
         print(inspect.stack()[0][3])
-        # {
-        # 'access_token': '2DSXIxA54w5NJVvYpVCvNtnBS67MhmeJJMtIwp9bG9ZIZ1oUJQFj0tbcDwooN',
-        # 'expires_in': 3540,
-        # 'scope': 'VIEW,TRADE,WITHDRAWAL',
-        # 'refresh_token': 'g43JKR4VYdBTFNA94EkYzL6y2x0cVAffr9FQMmQDxnKFXHyEMBZRlD8oUywbk',
-        # 'token_type': 'Bearer'
-        # }
         expire, access_token, refresh_token = self.korbit_machine.set_token(grant_type='password')
         assert access_token
         print(f'Expire: {expire}, AccessToken: {access_token}, RefreshToken: {refresh_token}')
@@ -41,3 +34,9 @@ class KorbitMachineTestCase(unittest.TestCase):
         order_book = self.korbit_machine.get_filled_orders(currency_type='btc_krw')
         assert order_book
         print(order_book)
+
+    def test_get_wallet_status(self):
+        print(inspect.stack()[0][3])
+        wallet_status = self.korbit_machine.get_wallet_status()
+        assert wallet_status
+        print(wallet_status)
