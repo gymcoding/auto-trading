@@ -115,3 +115,27 @@ class KorbitMachine():
         for item in self.TRADE_CURRENCY_TYPE:
             wallet_status[item]['balance'] = str(float(result[item]['trade_in_use']) + float(result[item]['withdrawal_in_use']))
         return wallet_status
+
+    # 매수주문 구현
+    def buy_order(self, currency_type=None, price=None, qty=None, order_type='limit'):
+        time.sleep(1)
+        if currency_type is None or price is None or qty is None:
+            raise Exception('Need to params')
+        buy_order_api_path = '/v1/user/orders/buy'
+        url_path = f'{self.BASE_API_URL}{buy_order_api_path}'
+        headers = {
+            'Authorization': f'Bearer {self.access_token}'
+        }
+        data = {
+            'currency_pair': currency_type,
+            'type': order_type,
+            'price': price,
+            'coin_amount': qty,
+            'nonce': self.get_nonce(),
+        }
+        response = requests.post(url_path, headers=headers, data=data)
+        result = response.json()
+        return result
+    
+    def get_nonce(self):
+        return str(int(time.time()))

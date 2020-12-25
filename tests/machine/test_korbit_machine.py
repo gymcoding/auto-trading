@@ -40,3 +40,20 @@ class KorbitMachineTestCase(unittest.TestCase):
         wallet_status = self.korbit_machine.get_wallet_status()
         assert wallet_status
         print(wallet_status)
+
+    def test_buy_order(self):
+        print(inspect.stack()[0][3])
+        buy_order = self.korbit_machine.buy_order(
+            currency_type='etc_krw',
+            price='5000',
+            qty='1',
+            order_type='limit',
+        )
+        assert buy_order
+        print(buy_order)
+    
+    def test_get_nonce(self):
+        print(inspect.stack()[0][3])
+        nonce = self.korbit_machine.get_nonce()
+        assert nonce
+        print(nonce)
