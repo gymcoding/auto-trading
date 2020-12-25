@@ -84,4 +84,18 @@ class KorbitMachine():
         result['volume'] = str(response_json['volume'])
         return result
     
+    # 거래소 체결 내역 구현
+    def get_filled_orders(self, currency_type=None, per='minute'):
+        if currency_type is None:
+            raise Exception('Need to currency_type')
+        time.sleep(1)
+        params = {
+            'currency_pair': currency_type,
+            'time': per
+        }
+        orders_api_path = '/v1/transactions'
+        url_path = f'{self.BASE_API_URL}{orders_api_path}'
+        response = requests.get(url_path, params=params)
+        result = response.json()
+        return result
     

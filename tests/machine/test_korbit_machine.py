@@ -35,3 +35,9 @@ class KorbitMachineTestCase(unittest.TestCase):
         ticker = self.korbit_machine.get_ticker('etc_krw')
         assert ticker
         print(ticker)
+    
+    def test_get_filled_orders(self):
+        print(inspect.stack()[0][3])
+        order_book = self.korbit_machine.get_filled_orders(currency_type='btc_krw')
+        assert order_book
+        print(order_book)
