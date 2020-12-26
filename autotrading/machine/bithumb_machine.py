@@ -5,6 +5,8 @@ import configparser
 import json
 import base64
 import hashlib
+import hmac
+import urllib
 
 class BithumbMachine():
 
@@ -57,3 +59,57 @@ class BithumbMachine():
         response = requests.get(url_path, params=params)
         result = response.json()
         return result
+
+    # 사용자 지갑정보 조회
+    def get_wallet_status(self, currency_type=None):
+        if currency_type is None:
+            raise Exception("Need to currency_type")
+        if currency_type not in self.TRADE_CURRENCY_TYPE:
+            raise Exception('Not support currency type') 
+        time.sleep(1)
+        endpoint = "/info/balance"
+        url_path = f'{self.BASE_API_URL}{endpoint}'
+        
+        endpoint_item_array = {
+            "endpoint" : endpoint,
+            "currency" : currency_type 
+        }
+        
+        uri_array = dict(endpoint_item_array) # Concatenate the two arrays.
+        str_data = urllib.parse.urlencode(uri_array)
+        nonce = self.get_nonce()
+        data = endpoint + chr(0) + str_data + chr(0) + nonce
+        utf8_data = data.encode('utf-8')
+        
+        key = self.CLIENT_SECRET
+        utf8_key = key.encode('utf-8')
+       
+        headers = {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Api-Key': self.CLIENT_ID,
+            'Api-Sign': self.get_signature(utf8_data, bytes(utf8_key)),
+            'Api-Nonce': nonce,
+        }
+        res = requests.post(url_path, headers=headers, data=str_data)
+        result = res.json()
+        return result["data"] 
+
+    
+    def microtime(self, get_as_float=False):
+        if get_as_float:
+            return time.time()
+        else:
+            return '%f %d' % math.modf(time.time())
+
+    def usecTime(self):
+        mt = self.microtime(False)
+        mt_array = mt.split(' ')[:2]
+        return mt_array[1] + mt_array[0][2:5]
+
+    def get_nonce(self):
+        return self.usecTime() # str(int(time.time()))
+    
+    def get_signature(self, encoded_payload, secret_key):
+        signature = hmac.new(secret_key, encoded_payload, hashlib.sha512);
+        api_sign = base64.b64encode(signature.hexdigest().encode('utf-8'))
+        return api_sign

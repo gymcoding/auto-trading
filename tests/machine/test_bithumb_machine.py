@@ -19,3 +19,8 @@ class BithumbMachineTestCase(unittest.TestCase):
         assert ticker
         print(ticker)
 
+    def test_get_wallet_status(self):
+        print(inspect.stack()[0][3])
+        result = self.bithumb_machine.get_wallet_status('ETH')
+        assert result
+        print(result)
