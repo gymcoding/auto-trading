@@ -30,3 +30,15 @@ class BithumbMachineTestCase(unittest.TestCase):
         result = self.bithumb_machine.get_list_my_orders('ETH')
         assert result
         print(result)
+
+    def test_buy_order(self):
+        print(inspect.stack()[0][3])
+        result = self.bithumb_machine.buy_order('ETH', 1, 700)
+        assert result
+        print(result)
+
+    def test_sell_order(self):
+        print(inspect.stack()[0][3])
+        result = self.bithumb_machine.sell_order('ETH', 1, 120)
+        assert result
+        print(result)
