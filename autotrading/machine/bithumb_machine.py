@@ -149,6 +149,41 @@ class BithumbMachine():
         response = requests.post(url_path, headers=headers, data=str_data)
         result = response.json()
         return result.get('data')
+    
+    # 사용자 주문 상세정보 조회
+    def get_my_order_status(self, currency_type=None, order_id=None):
+        if currency_type is None:
+            raise Exception('Need to currency_type')
+        if currency_type not in self.TRADE_CURRENCY_TYPE:
+            raise Exception('Not support currency type') 
+        time.sleep(1)
+        endpoint ='/info/order_detail'
+        url_path = f'{self.BASE_API_URL}{endpoint}'
+        
+        endpoint_item_array = {
+            'endpoint' : endpoint,
+            'currency' : currency_type
+        }
+        
+        uri_array = dict(endpoint_item_array) # Concatenate the two arrays.
+        str_data = urllib.parse.urlencode(uri_array)
+        nonce = self.get_nonce()
+        data = endpoint + chr(0) + str_data + chr(0) + nonce
+        utf8_data = data.encode('utf-8')
+        
+        key = self.CLIENT_SECRET
+        utf8_key = key.encode('utf-8')
+       
+        headers = {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Api-Key': self.CLIENT_ID,
+            'Api-Sign': self.get_signature(utf8_data,bytes(utf8_key)),
+            'Api-Nonce': nonce,
+        }
+
+        res = requests.post(url_path, headers=headers, data=str_data)
+        result = res.json()
+        return result['data']
 
     # 매수 주문
     def buy_order(self, currency_type=None, price=None, qty=None, order_type='limit'):
