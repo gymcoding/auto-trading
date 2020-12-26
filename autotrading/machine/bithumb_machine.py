@@ -7,8 +7,9 @@ import base64
 import hashlib
 import hmac
 import urllib
+from autotrading.machine.base_machine import Machine
 
-class BithumbMachine():
+class BithumbMachine(Machine):
 
     BASE_API_URL = 'https://api.bithumb.com'
     TRADE_CURRENCY_TYPE = ['BTC', 'ETH', 'DASH', 'LTC', 'ETC', 'XRP', 'BCH', 'XMR', 'ZEC', 'QTUM', 'BTG', 'EOS', 'ICX', 'VEN', 'TRX', 'ELF', 'MITH', 'MCO', 'OMG', 'KNC', 'GNT', 'HSR' ]
@@ -21,6 +22,15 @@ class BithumbMachine():
         self.CLIENT_SECRET = config['BITHUMB']['client_secret']
         self.USERNAME = config['BITHUMB']['username']
 
+    def get_username(self):
+        return self.USERNAME
+
+    def get_token(self):
+        pass
+        
+    def set_token(self):
+        pass
+        
     # 마지막 체결 정보 조회
     def get_ticker(self, currency_type=None):
         if currency_type is None:

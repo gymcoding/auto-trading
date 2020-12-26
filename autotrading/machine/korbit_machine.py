@@ -1,13 +1,14 @@
 import configparser
 import requests
 import time
+from autotrading.machine.base_machine import Machine
 
 # API call rate limit
 # 안정적인 Korbit API 서비스 제공을 위하여 짧은 시간 내에 limit call rate을 초과하는 일정 빈도 이상의 호출은 허용되지 않는다.
 # Access token 발급 및 갱신은 60분에 60번 호출할 수 있고,
 # Ticker 기능은 60초에 60번 호출할 수 있으며,
 # 이를 제외한 다른 모든 기능은 종류에 상관없이 도합 1초 동안 12번 호출이 가능하다.
-class KorbitMachine():
+class KorbitMachine(Machine):
     # REAT API 기본 URL
     BASE_API_URL = 'https://api.korbit.co.kr'
 
@@ -24,6 +25,9 @@ class KorbitMachine():
         self.access_token = None
         self.refresh_token = None
         self.token_type = None
+
+    def get_username(self):
+        return self.USERNAME
     
     def set_token(self, grant_type='password'):
         token_api_path = '/v1/oauth2/access_token'
