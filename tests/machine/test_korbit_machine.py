@@ -69,3 +69,9 @@ class KorbitMachineTestCase(unittest.TestCase):
         cancel_order = self.korbit_machine.cancel_order(currency_type='etc_krw', order_id='5064611')
         assert cancel_order
         print(cancel_order)
+
+    def test_get_my_order_status(self):
+        print(inspect.stack()[0][3])
+        my_order = self.korbit_machine.get_my_order_status(currency_type='etc_krw', order_id='5064611')
+        assert my_order
+        print(my_order)

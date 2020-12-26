@@ -181,3 +181,22 @@ class KorbitMachine():
         response = requests.post(url_path, headers=headers, data=data)
         result = response.json()
         return result
+
+    # 주문상태 확인 구현
+    def get_my_order_status(self, currency_type=None, order_id=None):
+        if currency_type is None or order_id is None:
+            raise Exception('Need to currency_type and order_id')
+        time.sleep(1)
+        list_transaction_api_path = '/v1/user/orders'
+        url_path = f'{self.BASE_API_URL}{list_transaction_api_path}'
+        headers = {
+            'Authorization': f'Bearer dh4ceZB7BacmSmS9aATctm5gXHYvgP9wAAHsylscXEBaVgeeV5ZDDQVGdPjcn'
+            # 'Authorization': f'Bearer {self.access_token}'
+        }
+        params = {
+            'currency_pair': currency_type,
+            'id': order_id,
+        }
+        response = requests.get(url_path, headers=headers, params=params)
+        result = response.json()
+        return result
