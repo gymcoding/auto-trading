@@ -63,3 +63,9 @@ class KorbitMachineTestCase(unittest.TestCase):
         sell_order = self.korbit_machine.sell_order(currency_type='etc_krw', price='40000', qty='1', order_type='limit')
         assert sell_order
         print(sell_order)
+
+    def test_cancel_order(self):
+        print(inspect.stack()[0][3])
+        cancel_order = self.korbit_machine.cancel_order(currency_type='etc_krw', order_id='5064611')
+        assert cancel_order
+        print(cancel_order)

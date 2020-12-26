@@ -162,3 +162,22 @@ class KorbitMachine():
         response = requests.post(url_path, headers=headers, data=data)
         result = response.json()
         return result
+    
+    # 취소주문 구현
+    def cancel_order(self, currency_type=None, order_id=None):
+        time.sleep(1)
+        if currency_type is None or order_id is None:
+            raise Exception('Need to params')
+        cancel_order_api_path = '/v1/user/orders/cancel'
+        url_path = f'{self.BASE_API_URL}{cancel_order_api_path}'
+        headers = {
+            'Authorization': f'Bearer {self.access_token}'
+        }
+        data = {
+            'currency_pair': currency_type,
+            'id': order_id,
+            'nonce': self.get_nonce(),
+        }
+        response = requests.post(url_path, headers=headers, data=data)
+        result = response.json()
+        return result
