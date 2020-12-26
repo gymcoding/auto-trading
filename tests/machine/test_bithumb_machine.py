@@ -24,3 +24,9 @@ class BithumbMachineTestCase(unittest.TestCase):
         result = self.bithumb_machine.get_wallet_status('ETH')
         assert result
         print(result)
+
+    def test_get_list_my_orders(self):
+        print(inspect.stack()[0][3])
+        result = self.bithumb_machine.get_list_my_orders('ETH')
+        assert result
+        print(result)
