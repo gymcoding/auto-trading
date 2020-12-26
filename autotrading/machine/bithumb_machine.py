@@ -228,3 +228,40 @@ class BithumbMachine():
         response = requests.post(url_path, headers=headers, data=str_data)
         result = response.json()
         return result
+
+    # 주문 취소
+    def cancel_order(self, currency_type=None, price=None, qty=None, order_type=None, order_id=None):
+        if currency_type is None:
+            raise Exception('Need to currency_type')
+        if currency_type not in self.TRADE_CURRENCY_TYPE:
+            raise Exception('Not support currency type')
+        time.sleep(1)
+        endpoint = '/trade/cancel'
+        url_path = f'{self.BASE_API_URL}{endpoint}'
+
+        endpoint_item_array = {
+            'endpoint': endpoint,
+            'order_currency': currency_type,
+            'type': order_type,
+            'order_id': order_id,
+        }
+
+        uri_array = dict(endpoint_item_array)
+        str_data = urllib.parse.urlencode(uri_array)
+        nonce = self.get_nonce()
+        data = endpoint + chr(0) + str_data + chr(0) + nonce
+        utf8_data = data.encode('utf-8')
+
+        key = self.CLIENT_SECRET
+        utf8_key = key.encode('utf-8')
+
+        headers = {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Api-Key': self.CLIENT_ID,
+            'Api-Sign': self.get_signature(utf8_data, bytes(utf8_key)),
+            'Api-Nonce': nonce,
+        }
+        print('headers: ', headers)
+        response = requests.post(url_path, headers=headers, data=str_data)
+        result = response.json()
+        return result

@@ -42,3 +42,9 @@ class BithumbMachineTestCase(unittest.TestCase):
         result = self.bithumb_machine.sell_order('ETH', 1, 120)
         assert result
         print(result)
+
+    def test_cancel_order(self):
+        print(inspect.stack()[0][3])
+        result = self.bithumb_machine.cancel_order('ETH', 'bid', '120')
+        assert result
+        print(result)
