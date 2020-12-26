@@ -9,7 +9,8 @@ import hashlib
 class BithumbMachine():
 
     BASE_API_URL = 'https://api.bithumb.com'
-    TRADE_CURRENCY_TYPE = ['BTC', 'ETH', 'DASH', 'LTC', 'ETC', 'XRP', 'BCH', 'XMR', 'ZEC', 'QTUM', 'BTG', 'EOS']
+    TRADE_CURRENCY_TYPE = ['BTC', 'ETH', 'DASH', 'LTC', 'ETC', 'XRP', 'BCH', 'XMR', 'ZEC', 'QTUM', 'BTG', 'EOS', 'ICX', 'VEN', 'TRX', 'ELF', 'MITH', 'MCO', 'OMG', 'KNC', 'GNT', 'HSR' ]
+    
 
     def __init__(self):
         config = configparser.ConfigParser()
@@ -37,4 +38,22 @@ class BithumbMachine():
         result['high'] = response_json['data'].get('max_price')
         result['low'] = response_json['data'].get('min_price')
         result['volume'] = response_json['data'].get('volume_1day')
+        return result
+
+    # 매매 완료 정보 조회
+    def get_filled_orders(self, currency_type=None):
+        if currency_type is None:
+            raise Exception('Need to currency_type')
+        if currency_type not in self.TRADE_CURRENCY_TYPE:
+            raise Exception('Not support currency type')
+        time.sleep(1)
+        params = {
+            'offset': 0,
+            'count': 100,
+        }
+        orders_api_path = f'/public/transaction_history/{currency_type}'
+        url_path = f'{self.BASE_API_URL}{orders_api_path}'
+        print('url_path: ', url_path)
+        response = requests.get(url_path, params=params)
+        result = response.json()
         return result

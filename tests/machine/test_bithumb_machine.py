@@ -12,3 +12,10 @@ class BithumbMachineTestCase(unittest.TestCase):
         ticker = self.bithumb_machine.get_ticker('ETC')
         assert ticker
         print(ticker)
+    
+    def test_get_filled_orders(self):
+        print(inspect.stack()[0][3])
+        ticker = self.bithumb_machine.get_filled_orders('ETC')
+        assert ticker
+        print(ticker)
+
