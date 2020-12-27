@@ -13,3 +13,6 @@ venv/bin/python -m unittest tests.machine.test_korbit_machine
 ```sh
 venv/bin/python -m unittest tests.machine.test_korbit_machine.KorbitMachineTestCase.test_get_ticker
 ```
+
+## MongoDB 에러 처리
+- [certificate verify failed: unable to get local issuer certificate 에러처리](https://www.dev2qa.com/how-to-fix-python-error-certificate-verify-failed-unable-to-get-local-issuer-certificate-in-mac-os/0)
